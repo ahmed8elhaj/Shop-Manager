@@ -37,4 +37,4 @@ This project uses the [Shop Manager API](https://github.com/Said-Aabilla/shop-ma
 
 ## Author
 
-[ahmed8elhaj](https://github.com/ahmed8elhaj)
+[AHMED AIT EL HAJ](https://github.com/ahmed8elhaj)

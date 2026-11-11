@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>ShopEase - Products</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
@@ -29,46 +29,45 @@
       </div>
 
       <div
-        class="m-5 mt-12 border rounded-xl p-10 rounded bg-white flex flex-col flex-wrap gap-2"
+        class="m-5 mt-12 border rounded-xl p-10 bg-white flex flex-col flex-wrap gap-2"
       >
         <h5 class="text-xl font-bold">Find what you need</h5>
         <p class="text-gray-500">
           Search and combine filters to narrow your selection.
         </p>
-        <div class="flex justify-between items-centermt-8 flex-wrap">
+        <div class="flex justify-between items-center mt-8 gap-4 flex-wrap">
           <div class="flex flex-col">
-            <label class="font-bold" for="">Search products</label>
+            <label class="font-bold" for="search-input">Search products</label>
             <input
               class="bg-gray-200 border border-black/10 p-4 rounded-xl"
               type="search" id="search-input"
             />
           </div>
           <div class="flex flex-col">
-            <label class="font-bold" for="">Category</label>
+            <label class="font-bold" for="category-select">Category</label>
             <select
               class="bg-gray-200 border border-black/10 p-4 rounded-xl"
-              name=""
               id="category-select"
             >
-              <option class="bg-gray-200" value="all">All Categories</option>
+              <option value="">All Categories</option>
             </select>
           </div>
 
           <div class="flex flex-col">
-            <label class="font-bold" for="">Stock</label>
+            <label class="font-bold" for="stock-select">Stock</label>
             <select
-              class="bg-gray-200 border border-black/10 p-8rounded-xl"
-              name=""
+              class="bg-gray-200 border border-black/10 p-4 rounded-xl"
               id="stock-select"
             >
-              <option value="">in Stock</option>
-              <option value="">Out of Stock</option>
+              <option value="">All Stock</option>
+              <option value="true">In Stock</option>
+              <option value="false">Out of Stock</option>
             </select>
           </div>
           <div class="flex flex-col gap-2">
-            <label class="font-bold" for="">Price</label>
+            <label class="font-bold" for="maxPrice-input">Price</label>
             <div>
-              <label class="font-bold" for="">Max</label>
+              <label class="font-bold" for="maxPrice-input">Max</label>
               <input
                 class="bg-gray-200 border border-black/10 p-2 rounded-xl"
                 type="number"
@@ -77,7 +76,7 @@
               />
             </div>
             <div>
-              <label class="font-bold" for="">Min</label>
+              <label class="font-bold" for="minPrice-input">Min</label>
               <input
                 class="bg-gray-200 border border-black/10 p-2 rounded-xl"
                 type="number"
@@ -91,12 +90,12 @@
       <div class="ml-6 mb-5">
         <p class="text-blue-500 font-bold m-5">Product catalog</p>
         <h5 id="products-count" class="text-xl font-bold">
-          Showing 12 products
+          Showing 0 products
         </h5>
       </div>
 
       <div id="products-contonair" class="flex flex-wrap gap-4"></div>
     </main>
+    <script src="js/script.js"></script>
   </body>
-  <script src="js/script.js"></script>
 </html>

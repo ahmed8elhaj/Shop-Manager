@@ -1,13 +1,41 @@
 const listOfProducts = document.getElementById("products-contonair");
 const productsCounter = document.getElementById("products-count");
-const stock = document.getElementById("stock");
-
 
 const searchInput = document.getElementById("search-input");
 const categoryInput = document.getElementById("category-select");
 const maxPriceInput = document.getElementById("maxPrice-input");
 const minPriceInput = document.getElementById("minPrice-input");
 const stockInput = document.getElementById("stock-select");
+
+// Only display the latest search results when requests finish out of order.
+let latestSearch = 0;
+
+async function applySearchAndFilters() {
+  latestSearch++;
+  const currentSearch = latestSearch;
+
+  try {
+    const products = await searchAndFilterProduct(
+      searchInput.value.trim(),
+      categoryInput.value,
+      maxPriceInput.value.trim(),
+      minPriceInput.value.trim(),
+      stockInput.value,
+    );
+
+    if (currentSearch !== latestSearch) {
+      return;
+    }
+
+    renderProducts(products);
+  } catch (error) {
+    console.error(error.message);
+    if (currentSearch === latestSearch) {
+      productsCounter.textContent = "Unable to load products";
+      listOfProducts.replaceChildren();
+    }
+  }
+}
 
 async function getProducts() {
   let products;
@@ -26,12 +54,22 @@ async function getProducts() {
   }
   return products;
 }
-getProducts();
-
 async function showProducts() {
   const products = await getProducts();
+
+  if (!Array.isArray(products)) {
+    productsCounter.textContent = "Unable to load products";
+    return;
+  }
+
+  showCategories(products);
+  renderProducts(products);
+}
+
+function renderProducts(products) {
   productsCounter.textContent = `Showing ${products.length} products`;
-  listOfProducts.innerHTML = "";
+  listOfProducts.replaceChildren();
+
   products.forEach((product) => {
     createProductCart(product);
   });
@@ -44,7 +82,6 @@ function createProductCart(element) {
     "flex w-full flex-col gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm md:w-[calc(50%_-_8px)] xl:w-[calc(33.333%_-_11px)]";
 
   productCarte.dataset.id = "product-" + element.id;
-
   // Create product image
   const productImg = document.createElement("img");
   productImg.src = `http://localhost:3000${element.image}`;
@@ -119,6 +156,34 @@ function createProductCart(element) {
   // Append product card to products container
   listOfProducts.appendChild(productCarte);
 }
+
+function showCategories(products) {
+  categoryInput.replaceChildren();
+
+  const allOption = document.createElement("option");
+  allOption.value = "";
+  allOption.textContent = "All Categories";
+  categoryInput.appendChild(allOption);
+
+  const categories = [];
+  products.forEach((element) => {
+    const exists = categories.some((category) => {
+      return category.id === element.categoryId;
+    });
+    if (exists === false) {
+      categories.push({
+        id: element.categoryId,
+        name: element.categoryName,
+      });
+      const categoryOption = document.createElement("option");
+      categoryOption.value = element.categoryId;
+      categoryOption.textContent = element.categoryName;
+
+      categoryInput.appendChild(categoryOption);
+    }
+  });
+}
+
 async function searchAndFilterProduct(
   search = "",
   categoryId = "",
@@ -127,6 +192,7 @@ async function searchAndFilterProduct(
   inStock = "",
 ) {
   const param = new URLSearchParams();
+
   if (search !== "") {
     param.append("search", search);
   }
@@ -137,16 +203,21 @@ async function searchAndFilterProduct(
     param.append("maxPrice", maxPrice);
   }
   if (minPrice !== "") {
-    param.append("minPrice",minPrice)
+    param.append("minPrice", minPrice);
   }
-  if(inStock!== ""){
-    param.append("inStock",inStock)
+  if (inStock !== "") {
+    param.append("inStock", inStock);
   }
-  if(!response.ok){
-    throw new Error("Failed to fetch products")
+  const response = await fetch(
+    `http://localhost:3000/api/products?${param.toString()}`,
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch products");
   }
-  const products=await response.json();
-  return products
+  const products = await response.json();
+  return products;
 }
+
 
 showProducts();

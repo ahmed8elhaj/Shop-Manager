@@ -10,6 +10,13 @@ const stockInput = document.getElementById("stock-select");
 // Only display the latest search results when requests finish out of order.
 let latestSearch = 0;
 
+searchInput.addEventListener("input", applySearchAndFilters);
+categoryInput.addEventListener("change", applySearchAndFilters);
+maxPriceInput.addEventListener("input", applySearchAndFilters);
+minPriceInput.addEventListener("input", applySearchAndFilters);
+stockInput.addEventListener("change", applySearchAndFilters);
+
+
 async function applySearchAndFilters() {
   latestSearch++;
   const currentSearch = latestSearch;
@@ -202,9 +209,6 @@ async function searchAndFilterProduct(
   if (maxPrice !== "") {
     param.append("maxPrice", maxPrice);
   }
-  if (minPrice !== "") {
-    param.append("minPrice", minPrice);
-  }
   if (inStock !== "") {
     param.append("inStock", inStock);
   }
@@ -215,9 +219,13 @@ async function searchAndFilterProduct(
   if (!response.ok) {
     throw new Error("Failed to fetch products");
   }
-  const products = await response.json();
+  let products = await response.json();
+    if (minPrice !== "") {
+    products = products.filter((element) => {
+      return element.price >= Number(minPrice);
+    });
+  }
   return products;
 }
-
 
 showProducts();

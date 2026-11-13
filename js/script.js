@@ -7,7 +7,8 @@ const maxPriceInput = document.getElementById("maxPrice-input");
 const minPriceInput = document.getElementById("minPrice-input");
 const stockInput = document.getElementById("stock-select");
 
-let latestSearch = 0;
+
+
 
 
 
@@ -46,8 +47,6 @@ async function getProducts() {
 }
 
 async function applySearchAndFilters() {
-  latestSearch++;
-  const currentSearch = latestSearch;
   try {
     const products = await searchAndFilterProduct(
       searchInput.value.trim(),
@@ -56,19 +55,10 @@ async function applySearchAndFilters() {
       minPriceInput.value.trim(),
       stockInput.value,
     );
-
-    if (currentSearch !== latestSearch) {
-      return;
-    }
-
     renderProducts(products);
+
   } catch (error) {
     console.error(error.message);
-    if (currentSearch === latestSearch) {
-      productsCounter.textContent = "Unable to load products";
-      listOfProducts.replaceChildren();
-      showError("Please try again.")
-    }
   }
 }
 

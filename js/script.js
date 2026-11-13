@@ -7,8 +7,9 @@ const maxPriceInput = document.getElementById("maxPrice-input");
 const minPriceInput = document.getElementById("minPrice-input");
 const stockInput = document.getElementById("stock-select");
 
-// Only display the latest search results when requests finish out of order.
 let latestSearch = 0;
+
+
 
 searchInput.addEventListener("input", applySearchAndFilters);
 categoryInput.addEventListener("change", applySearchAndFilters);
@@ -17,10 +18,36 @@ minPriceInput.addEventListener("input", applySearchAndFilters);
 stockInput.addEventListener("change", applySearchAndFilters);
 
 
+
+
+async function getProducts() {
+  let products;
+  try {
+    showLoader();
+    const response = await fetch("http://localhost:3000/api/products");
+    console.log(response.status);
+    if (response.ok) {
+      setTimeout(() => {
+        hideLoader();
+      }, 1000);
+    }
+    if (!response.ok) {
+      const problem = await response.json();
+      console.log(problem.message);
+      return;
+    }
+    products = await response.json();
+    // console.log(products);
+  } catch (error) {
+    console.log(error.message);
+    showError();
+  }
+  return products;
+}
+
 async function applySearchAndFilters() {
   latestSearch++;
   const currentSearch = latestSearch;
-
   try {
     const products = await searchAndFilterProduct(
       searchInput.value.trim(),
@@ -44,23 +71,6 @@ async function applySearchAndFilters() {
   }
 }
 
-async function getProducts() {
-  let products;
-  try {
-    const response = await fetch("http://localhost:3000/api/products");
-    console.log(response.status);
-    if (!response.ok) {
-      const problem = await response.json();
-      console.log(problem.message);
-      return;
-    }
-    products = await response.json();
-    // console.log(products);
-  } catch (error) {
-    console.log(error.message);
-  }
-  return products;
-}
 async function showProducts() {
   const products = await getProducts();
 
@@ -218,14 +228,58 @@ async function searchAndFilterProduct(
 
   if (!response.ok) {
     throw new Error("Failed to fetch products");
+    showError();
   }
   let products = await response.json();
-    if (minPrice !== "") {
+  if (minPrice !== "") {
     products = products.filter((element) => {
       return element.price >= Number(minPrice);
     });
   }
   return products;
 }
+
+
+
+function showLoader() {
+  let interval;
+  const startedAt = Date.now();
+  Swal.fire({
+    title: "Loading products…",
+    html: 'Elapsed time: <strong id="loading-seconds">0</strong>s',
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+
+    didOpen: function (popup) {
+      Swal.showLoading();
+
+      const counter = popup.querySelector("#loading-seconds");
+
+      interval = setInterval(function () {
+        const seconds = Math.floor((Date.now() - startedAt) / 1000);
+        counter.textContent = seconds;
+      }, 1000);
+    },
+
+    willClose: function () {
+      clearInterval(interval);
+    },
+  });
+}
+
+function hideLoader() {
+  Swal.close();
+}
+
+function showError() {
+  hideLoader();
+  Swal.fire({
+    icon: "error",
+    title: "Unable to load products",
+    text: "Please try again.",
+  });
+}
+
+
 
 showProducts();

@@ -17,7 +17,7 @@
       <div class="text-4xl font-bold">
         Shop<span class="text-blue-500">Ease</span>
       </div>
-      <button class="text-blue-500 font-bold text-4xl hover:text-blue-800">
+      <button id="openPanel" class="text-blue-500 font-bold text-4xl hover:text-blue-800">
         <i class="fa-solid fa-cart-shopping"></i>
       </button>
     </header>
@@ -41,7 +41,8 @@
             <label class="font-bold" for="search-input">Search products</label>
             <input
               class="bg-gray-200 border border-black/10 p-4 rounded-xl"
-              type="search" id="search-input"
+              type="search"
+              id="search-input"
             />
           </div>
           <div class="flex flex-col">
@@ -96,7 +97,34 @@
       </div>
 
       <div id="products-contonair" class="flex flex-wrap gap-4"></div>
+      <div
+        id="panelWrapper"
+        class="pointer-events-none fixed inset-0 z-50 overflow-hidden opacity-0 transition-opacity duration-300"
+        inert
+      >
+        <div
+          id="overlay"
+          class="absolute inset-0 bg-black/10 backdrop-blur-sm"
+        ></div>
+
+        <section
+          id="yellowPanel"
+          class="absolute inset-y-0 right-0 z-10 flex w-full translate-x-full flex-col gap-4 overflow-y-auto rounded-l-xl bg-yellow-300 p-5 shadow-xl transition-transform duration-300 ease-in-out md:w-1/2 xl:w-1/3"
+        >
+          <button
+            id="closePanel"
+            type="button"
+            class="self-end rounded-lg bg-white px-3 py-1"
+          >
+            Close
+          </button>
+        </section>
+      </div>
     </main>
+
+    <script src="js/storage.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/reservation.js"></script>
+    <script src="js/ui.js"></script>
   </body>
 </html>

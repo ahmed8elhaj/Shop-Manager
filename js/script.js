@@ -7,19 +7,11 @@ const maxPriceInput = document.getElementById("maxPrice-input");
 const minPriceInput = document.getElementById("minPrice-input");
 const stockInput = document.getElementById("stock-select");
 
-
-
-
-
-
 searchInput.addEventListener("input", applySearchAndFilters);
 categoryInput.addEventListener("change", applySearchAndFilters);
 maxPriceInput.addEventListener("input", applySearchAndFilters);
 minPriceInput.addEventListener("input", applySearchAndFilters);
 stockInput.addEventListener("change", applySearchAndFilters);
-
-
-
 
 async function getProducts() {
   let products;
@@ -28,9 +20,11 @@ async function getProducts() {
     const response = await fetch("http://localhost:3000/api/products");
     console.log(response.status);
     if (response.ok) {
-      setTimeout(() => {
-        hideLoader();
-      }, 1000);
+      hideLoader();
+
+      // setTimeout(() => {
+      //   hideLoader();
+      // }, 1000);
     }
     if (!response.ok) {
       const problem = await response.json();
@@ -56,7 +50,6 @@ async function applySearchAndFilters() {
       stockInput.value,
     );
     renderProducts(products);
-
   } catch (error) {
     console.error(error.message);
   }
@@ -81,8 +74,8 @@ function renderProducts(products) {
   products.forEach((product) => {
     createProductCart(product);
   });
-  if(products.length==0){
-    showError('Not found please try again.')
+  if (products.length == 0) {
+    showError("Not found please try again.");
   }
 }
 
@@ -120,10 +113,21 @@ function createProductCart(element) {
   productCarte.appendChild(productDescription);
 
   // Create product price
+  const addToBasketDiv = document.createElement("div");
+  addToBasketDiv.classList = "flex items-center justify-between";
+
   const productPrice = document.createElement("h5");
   productPrice.className = "text-xl font-bold";
   productPrice.innerText = `$${element.price}`;
-  productCarte.appendChild(productPrice);
+  addToBasketDiv.appendChild(productPrice);
+
+  const addToBaskitButton = document.createElement("button");
+  addToBaskitButton.classList =
+    "text-white bg-black h-[150%] w-[30%] rounded-lg";
+  addToBaskitButton.innerText = "ADD TO BASKET";
+  addToBaskitButton.id = `button-add-basket-` + `${element.id}`;
+  addToBasketDiv.appendChild(addToBaskitButton);
+  productCarte.appendChild(addToBasketDiv);
 
   // Create stock section
   const availableSection = document.createElement("div");
@@ -166,6 +170,21 @@ function createProductCart(element) {
 
   // Append product card to products container
   listOfProducts.appendChild(productCarte);
+
+  addToBaskitButton.addEventListener("click", () => {
+    const existingProduct = basket.find((product) => {
+      return product.id === element.id;
+    });
+
+    if (existingProduct) {
+      existingProduct.reserve++;
+    } else {
+      basket.push({ ...element, reserve: 1 });
+    }
+
+    saveToLS(BASKET_KEY, basket);
+    renderBasket()
+  });
 }
 
 function showCategories(products) {
@@ -233,8 +252,6 @@ async function searchAndFilterProduct(
   return products;
 }
 
-
-
 function showLoader() {
   let interval;
   const startedAt = Date.now();
@@ -273,7 +290,5 @@ function showError(error) {
     text: error,
   });
 }
-
-
 
 showProducts();

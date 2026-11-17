@@ -17,7 +17,10 @@
       <div class="text-4xl font-bold">
         Shop<span class="text-blue-500">Ease</span>
       </div>
-      <button id="openPanel" class="text-blue-500 font-bold text-4xl hover:text-blue-800">
+      <button
+        id="openPanel"
+        class="text-blue-500 font-bold text-4xl hover:text-blue-800"
+      >
         <i class="fa-solid fa-cart-shopping"></i>
       </button>
     </header>
@@ -118,13 +121,72 @@
           >
             Close
           </button>
+          <div id="basket-product-list" class="flex bg-white gap-5">
+
+          </div>
+
+          <div id="yellowPanel-midlle-secton"></div>
+          <form
+            id="form-yellowPanel"
+            action=""
+            method="post"
+            class="flex flex-col gap-3 relative mt-20 bottom-10 m-4 w-[90%]"
+          >
+          <p id="checkout-product-name" class="font-bold"></p>
+            <input
+              type="text"
+              class="h-10 rounded-lg w-[100%]"
+              placeholder="   Nom"
+            />
+
+            <input
+              type="email"
+              class="h-10 rounded-lg w-[100%]"
+              placeholder="   E-mail"
+            />
+
+            <input
+              type="text"
+              class="h-10 rounded-lg w-[100%]"
+              placeholder="   Adresse"
+            />
+
+            <input
+              type="text"
+              class="h-10 rounded-lg w-[100%]"
+              placeholder="   Ville"
+            />
+
+            <div class="flex gap-3">
+              <input
+                type="téléphone"
+                class="h-10 rounded-lg w-[100%]"
+                placeholder="   Téléphone"
+              />
+
+              <input
+                type="code-postal"
+                class="h-10 rounded-lg w-[100%]"
+                placeholder="   Code Postal"
+              />
+            </div>
+
+            <textarea
+              name=""
+              id=""
+              class="h-10 rounded-lg w-[100%]"
+              placeholder="   Ecrir votre Note ici ...."
+            ></textarea>
+            <button class="bg-black text-white h-10 rounded-lg w-[100%]">
+              CHECK OUT
+            </button>
+          </form>
         </section>
       </div>
     </main>
-
     <script src="js/storage.js"></script>
     <script src="js/script.js"></script>
-    <script src="js/reservation.js"></script>
     <script src="js/ui.js"></script>
+    <script src="js/reservation.js"></script>
   </body>
 </html>

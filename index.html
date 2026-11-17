@@ -121,9 +121,7 @@
           >
             Close
           </button>
-          <div id="basket-product-list" class="flex bg-white gap-5">
-
-          </div>
+          <div id="basket-product-list" class="flex bg-white gap-5"></div>
 
           <div id="yellowPanel-midlle-secton"></div>
           <form
@@ -132,26 +130,30 @@
             method="post"
             class="flex flex-col gap-3 relative mt-20 bottom-10 m-4 w-[90%]"
           >
-          <p id="checkout-product-name" class="font-bold"></p>
+            <p id="checkout-product-name" class="font-bold"></p>
             <input
+              name="name"
               type="text"
               class="h-10 rounded-lg w-[100%]"
               placeholder="   Nom"
             />
 
             <input
+              name="email"
               type="email"
               class="h-10 rounded-lg w-[100%]"
               placeholder="   E-mail"
             />
 
             <input
+              name="address"
               type="text"
               class="h-10 rounded-lg w-[100%]"
               placeholder="   Adresse"
             />
 
             <input
+              name="city"
               type="text"
               class="h-10 rounded-lg w-[100%]"
               placeholder="   Ville"
@@ -159,12 +161,14 @@
 
             <div class="flex gap-3">
               <input
+                name="phone"
                 type="téléphone"
                 class="h-10 rounded-lg w-[100%]"
                 placeholder="   Téléphone"
               />
 
               <input
+                name="postalCode"
                 type="code-postal"
                 class="h-10 rounded-lg w-[100%]"
                 placeholder="   Code Postal"
@@ -172,12 +176,12 @@
             </div>
 
             <textarea
-              name=""
+              name="notes"
               id=""
               class="h-10 rounded-lg w-[100%]"
               placeholder="   Ecrir votre Note ici ...."
             ></textarea>
-            <button class="bg-black text-white h-10 rounded-lg w-[100%]">
+            <button type="submit" class="bg-black text-white h-10 rounded-lg w-[100%]">
               CHECK OUT
             </button>
           </form>

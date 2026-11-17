@@ -59,6 +59,10 @@ productImg.className = "h-auto w-28 shrink-0 object-contain sm:w-36";
 
   checkoutButton.addEventListener("click", () => {
     openCheckoutForm(product);
+
+    checkoutButton.addEventListener("click", () => {
+  openCheckoutForm(product);
+});
   });
 
   details.append(title, unitPrice, quantityText, subtotalText, checkoutButton);

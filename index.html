@@ -17,6 +17,7 @@
       <div class="text-4xl font-bold">
         Shop<span class="text-blue-500">Ease</span>
       </div>
+      
       <button
         id="openPanel"
         class="text-blue-500 font-bold text-4xl hover:text-blue-800"
@@ -94,9 +95,14 @@
       </div>
       <div class="ml-6 mb-5">
         <p class="text-blue-500 font-bold m-5">Product catalog</p>
-        <h5 id="products-count" class="text-xl font-bold">
+        <div class="flex items-center justify-between">
+                  <h5 id="products-count" class="text-xl font-bold">
           Showing 0 products
         </h5>
+         <button class="bg-green-600 text-white px-4 py-2 rounded font-medium hover:bg-green-700"><a href="confirm.html">View Reservation</a></button>
+        </div>
+
+      </div>
       </div>
 
       <div id="products-contonair" class="flex flex-wrap gap-4"></div>
@@ -188,9 +194,7 @@
         </section>
       </div>
     </main>
-    <script src="js/storage.js"></script>
-    <script src="js/script.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/reservation.js"></script>
+<script type="module" src="./js/pages/catalog-page.js"></script>
+
   </body>
 </html>

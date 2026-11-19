@@ -7,7 +7,8 @@ const maxPriceInput = document.getElementById("maxPrice-input");
 const minPriceInput = document.getElementById("minPrice-input");
 const stockInput = document.getElementById("stock-select");
 
-let latestSearch = 0;
+
+
 
 
 
@@ -40,14 +41,12 @@ async function getProducts() {
     // console.log(products);
   } catch (error) {
     console.log(error.message);
-    showError();
+    showError("Please try again.");
   }
   return products;
 }
 
 async function applySearchAndFilters() {
-  latestSearch++;
-  const currentSearch = latestSearch;
   try {
     const products = await searchAndFilterProduct(
       searchInput.value.trim(),
@@ -56,18 +55,10 @@ async function applySearchAndFilters() {
       minPriceInput.value.trim(),
       stockInput.value,
     );
-
-    if (currentSearch !== latestSearch) {
-      return;
-    }
-
     renderProducts(products);
+
   } catch (error) {
     console.error(error.message);
-    if (currentSearch === latestSearch) {
-      productsCounter.textContent = "Unable to load products";
-      listOfProducts.replaceChildren();
-    }
   }
 }
 
@@ -90,6 +81,9 @@ function renderProducts(products) {
   products.forEach((product) => {
     createProductCart(product);
   });
+  if(products.length==0){
+    showError('Not found please try again.')
+  }
 }
 
 function createProductCart(element) {
@@ -228,7 +222,7 @@ async function searchAndFilterProduct(
 
   if (!response.ok) {
     throw new Error("Failed to fetch products");
-    showError();
+    showError("Please try again.");
   }
   let products = await response.json();
   if (minPrice !== "") {
@@ -271,12 +265,12 @@ function hideLoader() {
   Swal.close();
 }
 
-function showError() {
+function showError(error) {
   hideLoader();
   Swal.fire({
     icon: "error",
     title: "Unable to load products",
-    text: "Please try again.",
+    text: error,
   });
 }
 

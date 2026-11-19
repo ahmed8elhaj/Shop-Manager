@@ -4,22 +4,20 @@ import { createReservationCarte } from "../ui/reservation-card.js";
 import { showLoader, hideLoader, showError } from "../ui/alerts.js";
 
 const list = document.getElementById("reservations-list");
-const emailInput = document.getElementById("reservation-email");
 const statusSelect = document.getElementById("reservation-status");
 const reservationCount = document.getElementById("reservation-count");
 const noReservations = document.getElementById("no-reservations");
+const emailInput = document.getElementById("reservation-email");
 
 function filterReservations() {
-  const email = emailInput.value.trim().toLowerCase();
   const status = statusSelect.value;
   const cards = list.querySelectorAll("[data-reservation-id]");
   let visibleCount = 0;
 
   cards.forEach((card) => {
-    const matchesEmail = email === "" || card.dataset.email.toLowerCase() === email;
     const matchesStatus = status === "" || card.dataset.status === status;
 
-    if (matchesEmail && matchesStatus) {
+    if (matchesStatus) {
       card.classList.remove("hidden");
       visibleCount++;
     } else {
@@ -33,6 +31,17 @@ function filterReservations() {
 
 async function showReservation() {
   let reservations;
+  const email = emailInput.value.trim().toLowerCase();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  if (!emailRegex.test(email)) {
+    Swal.fire({
+      icon: "warning",
+      title: "Invalid email",
+      text: "Please enter a valid email address.",
+    });
+    return;
+  }
 
   showLoader("Loading reservations…");
 
@@ -78,7 +87,5 @@ async function showReservation() {
   filterReservations();
 }
 
-emailInput.addEventListener("input", filterReservations);
+emailInput.addEventListener("change", showReservation);
 statusSelect.addEventListener("change", filterReservations);
-
-showReservation();

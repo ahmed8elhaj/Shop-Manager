@@ -1,6 +1,11 @@
+const emailInput = document.getElementById("reservation-email");
 
 export async function getReservations() {
-  const response = await fetch("http://localhost:3000/api/reservations");
+  const email = emailInput.value.trim().toLowerCase();
+
+  const response = await fetch(
+    `http://localhost:3000/api/reservations?email=${email}`,
+  );
 
   if (!response.ok) {
     throw new Error("HTTP error " + response.status);

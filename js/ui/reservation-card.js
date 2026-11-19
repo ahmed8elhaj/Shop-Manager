@@ -1,5 +1,12 @@
-export function createReservationCarte(reservation, product) {
+function appendReservationDetail(container, label, value) {
+  const line = document.createElement("p");
+  line.className = "mt-1 text-sm text-slate-600";
+  line.textContent = `${label}: ${value}`;
+  container.appendChild(line);
+}
 
+export function createReservationCarte(reservation, product) {
+  const customer = reservation.customer || {};
   const quantity = reservation.quantity;
   const price = Number(reservation.unitPrice);
   const subtotal = Number(reservation.total);
@@ -8,7 +15,7 @@ export function createReservationCarte(reservation, product) {
   const card = document.createElement("article");
   card.className = "rounded-2xl border border-slate-200 bg-white p-5";
   card.dataset.reservationId = reservation.id;
-  card.dataset.email = reservation.customer.email;
+  card.dataset.email = customer.email || "";
   card.dataset.status = status;
 
   const header = document.createElement("div");
@@ -41,13 +48,34 @@ export function createReservationCarte(reservation, product) {
 
   const priceAndQuantity = document.createElement("p");
   priceAndQuantity.className = "text-sm text-slate-600";
-  priceAndQuantity.textContent = `$${price.toFixed(2)} each · Quantity: ${quantity}`;
+  priceAndQuantity.textContent =
+    `$${price.toFixed(2)} each · Quantity: ${quantity}`;
 
   const subtotalText = document.createElement("p");
   subtotalText.className = "mt-1 font-bold";
-  subtotalText.textContent = `Subtotal: $${subtotal.toFixed(2)}`;
+  subtotalText.textContent = `Total: $${subtotal.toFixed(2)}`;
 
   details.append(title, priceAndQuantity, subtotalText);
+
+  let date = "—";
+
+  if (reservation.createdAt) {
+    date = new Date(reservation.createdAt).toLocaleDateString();
+  }
+
+  appendReservationDetail(details, "Date", date);
+  appendReservationDetail(details, "Address", customer.address || "—");
+  appendReservationDetail(details, "City", customer.city || "—");
+  appendReservationDetail(details, "Phone", customer.phone || "—");
+
+  if (customer.postalCode) {
+    appendReservationDetail(details, "Postal code", customer.postalCode);
+  }
+
+  if (reservation.notes) {
+    appendReservationDetail(details, "Note", reservation.notes);
+  }
+
   const content = document.createElement("div");
   content.className = "mt-4 flex items-center gap-4";
 
@@ -55,7 +83,8 @@ export function createReservationCarte(reservation, product) {
     const image = document.createElement("img");
     image.src = `http://localhost:3000${product.image}`;
     image.alt = reservation.productName;
-    image.className = "h-24 w-24 shrink-0 rounded-xl bg-slate-50 object-contain";
+    image.className =
+      "h-24 w-24 shrink-0 rounded-xl bg-slate-50 object-contain";
     content.appendChild(image);
   }
 
@@ -87,3 +116,4 @@ export function createReservationCarte(reservation, product) {
 
   return card;
 }
+

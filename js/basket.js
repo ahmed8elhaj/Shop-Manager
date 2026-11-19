@@ -1,4 +1,5 @@
 import { BASKET_KEY, readFromLS, saveToLS } from "./storage.js";
+import { renderBasket } from "./ui/basket-panel.js";
 
 export let basket = readFromLS(BASKET_KEY);
 
@@ -7,8 +8,24 @@ export function addToBasket(element) {
     return product.id === element.id;
   });
 
+  let quantityInBasket = 0;
+
   if (existingProduct) {
-    existingProduct.reserve = (existingProduct.reserve || 1) + 1;
+    quantityInBasket = existingProduct.reserve || 1;
+  }
+
+  if (quantityInBasket >= element.stock) {
+    Swal.fire({
+      icon: "warning",
+      title: "Stock limit reached",
+      text: "No more units are available to add to your basket."
+    });
+
+    return;
+  }
+
+  if (existingProduct) {
+    existingProduct.reserve = quantityInBasket + 1;
   } else {
     basket.push({ ...element, reserve: 1 });
   }
@@ -22,4 +39,5 @@ export function removeFromBasket(productId) {
   });
 
   saveToLS(BASKET_KEY, basket);
+  renderBasket();
 }

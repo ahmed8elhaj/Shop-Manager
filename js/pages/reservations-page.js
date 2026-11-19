@@ -1,4 +1,8 @@
-import { getReservations } from "../api/reservations-api.js";
+import {
+  getReservations,
+  confirmReservation,
+  cancelReservation,
+} from "../api/reservations-api.js";
 import { getProducts } from "../api/products-api.js";
 import { createReservationCarte } from "../ui/reservation-card.js";
 import { showLoader, hideLoader, showError } from "../ui/alerts.js";
@@ -89,3 +93,41 @@ async function showReservation() {
 
 emailInput.addEventListener("change", showReservation);
 statusSelect.addEventListener("change", filterReservations);
+
+list.addEventListener("click", async (event) => {
+  const button = event.target.closest("button[data-action]");
+
+  if (!button) {
+    return;
+  }
+
+  const card = button.closest("[data-reservation-id]");
+
+  if (!card) {
+    return;
+  }
+
+  const reservationId = card.dataset.reservationId;
+  const action = button.dataset.action;
+
+  const buttons = card.querySelectorAll("button[data-action]");
+  buttons.forEach((item) => {
+    item.disabled = true;
+  });
+
+  try {
+    if (action === "confirm") {
+      await confirmReservation(reservationId);
+    } else if (action === "cancel") {
+      await cancelReservation(reservationId);
+    }
+
+    await showReservation();
+  } catch (error) {
+    showError(error.message, "Unable to update reservation");
+  } finally {
+    buttons.forEach((item) => {
+      item.disabled = false;
+    });
+  }
+});

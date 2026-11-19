@@ -89,7 +89,8 @@ function createProductBasketCart(product) {
   const subtotal = price * quantity;
 
   const productCarte = document.createElement("article");
-  productCarte.className = "flex w-full items-center gap-4 rounded-xl bg-white p-4";
+  productCarte.className =
+    "flex w-full items-center gap-4 rounded-xl bg-white p-4";
 
   const productImg = document.createElement("img");
   productImg.src = `http://localhost:3000${product.image}`;
@@ -115,14 +116,31 @@ function createProductBasketCart(product) {
 
   const checkoutButton = document.createElement("button");
   checkoutButton.type = "button";
-  checkoutButton.className = "mt-2 rounded-lg bg-black px-3 py-2 text-sm text-white";
+  checkoutButton.className =
+    "mt-2 rounded-lg bg-black px-3 py-2 text-sm text-white";
   checkoutButton.textContent = "Checkout this item";
+
+  const cancelButton = document.createElement("button");
+  cancelButton.type = "button";
+  cancelButton.className =
+    "mt-2 rounded-lg bg-red-500 px-3 py-2 text-sm text-white";
+  cancelButton.textContent = "Cancel this item";
 
   checkoutButton.addEventListener("click", () => {
     openCheckoutForm(product);
   });
+    cancelButton.addEventListener("click", () => {
+    removeFromBasket(product.id);
+  });
 
-  details.append(title, unitPrice, quantityText, subtotalText, checkoutButton);
+  details.append(
+    title,
+    unitPrice,
+    quantityText,
+    subtotalText,
+    checkoutButton,
+    cancelButton,
+  );
   productCarte.append(productImg, details);
   yellowPanelMidlleSecton.appendChild(productCarte);
 }

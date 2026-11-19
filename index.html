@@ -17,7 +17,11 @@
       <div class="text-4xl font-bold">
         Shop<span class="text-blue-500">Ease</span>
       </div>
-      <button class="text-blue-500 font-bold text-4xl hover:text-blue-800">
+      
+      <button
+        id="openPanel"
+        class="text-blue-500 font-bold text-4xl hover:text-blue-800"
+      >
         <i class="fa-solid fa-cart-shopping"></i>
       </button>
     </header>
@@ -41,7 +45,8 @@
             <label class="font-bold" for="search-input">Search products</label>
             <input
               class="bg-gray-200 border border-black/10 p-4 rounded-xl"
-              type="search" id="search-input"
+              type="search"
+              id="search-input"
             />
           </div>
           <div class="flex flex-col">
@@ -90,13 +95,106 @@
       </div>
       <div class="ml-6 mb-5">
         <p class="text-blue-500 font-bold m-5">Product catalog</p>
-        <h5 id="products-count" class="text-xl font-bold">
+        <div class="flex items-center justify-between">
+                  <h5 id="products-count" class="text-xl font-bold">
           Showing 0 products
         </h5>
+         <button class="bg-green-600 text-white px-4 py-2 rounded font-medium hover:bg-green-700"><a href="confirm.html">View Reservation</a></button>
+        </div>
+
+      </div>
       </div>
 
       <div id="products-contonair" class="flex flex-wrap gap-4"></div>
+      <div
+        id="panelWrapper"
+        class="pointer-events-none fixed inset-0 z-50 overflow-hidden opacity-0 transition-opacity duration-300"
+        inert
+      >
+        <div
+          id="overlay"
+          class="absolute inset-0 bg-black/10 backdrop-blur-sm"
+        ></div>
+
+        <section
+          id="yellowPanel"
+          class="absolute inset-y-0 right-0 z-10 flex w-full translate-x-full flex-col gap-4 overflow-y-auto rounded-l-xl bg-yellow-300 p-5 shadow-xl transition-transform duration-300 ease-in-out md:w-1/2 xl:w-1/3"
+        >
+          <button
+            id="closePanel"
+            type="button"
+            class="self-end rounded-lg bg-white px-3 py-1"
+          >
+            Close
+          </button>
+          <div id="basket-product-list" class="flex bg-white gap-5"></div>
+
+          <div id="yellowPanel-midlle-secton"></div>
+          <form
+            id="form-yellowPanel"
+            action=""
+            method="post"
+            class="flex flex-col gap-3 relative mt-20 bottom-10 m-4 w-[90%]"
+          >
+            <p id="checkout-product-name" class="font-bold"></p>
+            <input
+              name="name"
+              type="text"
+              class="h-10 rounded-lg w-[100%]"
+              placeholder="   Nom"
+            />
+
+            <input
+              name="email"
+              type="email"
+              class="h-10 rounded-lg w-[100%]"
+              placeholder="   E-mail"
+            />
+
+            <input
+              name="address"
+              type="text"
+              class="h-10 rounded-lg w-[100%]"
+              placeholder="   Adresse"
+            />
+
+            <input
+              name="city"
+              type="text"
+              class="h-10 rounded-lg w-[100%]"
+              placeholder="   Ville"
+            />
+
+            <div class="flex gap-3">
+              <input
+                name="phone"
+                type="téléphone"
+                class="h-10 rounded-lg w-[100%]"
+                placeholder="   Téléphone"
+              />
+
+              <input
+                name="postalCode"
+                type="code-postal"
+                class="h-10 rounded-lg w-[100%]"
+                placeholder="   Code Postal"
+              />
+            </div>
+
+            <textarea
+              name="notes"
+              id=""
+              class="h-10 rounded-lg w-[100%]"
+              placeholder="   Ecrir votre Note ici ...."
+            ></textarea>
+            <button type="submit" class="bg-black text-white h-10 rounded-lg w-[100%]">
+              CHECK OUT
+            </button>
+          </form>
+        </section>
+      </div>
     </main>
-    <script src="js/script.js"></script>
+<script type="module" src="./js/pages/catalog-page.js"></script>
+
   </body>
 </html>
